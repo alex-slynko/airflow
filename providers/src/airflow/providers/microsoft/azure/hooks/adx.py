@@ -201,6 +201,12 @@ class AzureDataExplorerHook(BaseHook):
                 connection_string=cluster,
                 credential=credential,
             )
+        elif auth_method == 'AAD_MSI':
+            client_id = conn.extra_dejson.get("client_id")
+            kcsb = KustoConnectionStringBuilder.with_aad_managed_service_identity_authentication(
+                connection_string=cluster,
+                client_id=client_id
+            )
         else:
             raise AirflowException(f"Unknown authentication method: {auth_method}")
 
